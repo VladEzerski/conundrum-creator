@@ -11,11 +11,15 @@ import {
 
 // import { Button } from 'components'
 import { Button } from '../../components'
+import { NavigationService } from '../../navigation/AppNavigator'
 
 import styles from './styles'
 
-const WelcomeScreen: FC = () => {
+const WelcomeScreen: FC<any> = props => {
+  console.log('WelcomeScreen props: ', props)
+
   const isDarkMode = useColorScheme() === 'dark'
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -31,9 +35,13 @@ const WelcomeScreen: FC = () => {
         <View style={styles.btnContainer}>
           <Button
             btnText="Начать"
-            onClick={() => {
-              Alert.alert('Clicked!')
-            }}
+            onClick={() =>
+              NavigationService.pushScreen(
+                props.componentId,
+                'MainScreen',
+                'MainScreenName',
+              )
+            }
           />
         </View>
       </View>
