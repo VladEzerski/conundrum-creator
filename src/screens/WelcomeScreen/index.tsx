@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import {
-  Alert,
   Image,
   SafeAreaView,
   StatusBar,
@@ -36,11 +35,7 @@ const WelcomeScreen: FC<any> = props => {
           <Button
             btnText="Начать"
             onClick={() =>
-              NavigationService.pushScreen(
-                props.componentId,
-                'MainScreen',
-                'MainScreenName',
-              )
+              NavigationService.pushScreen(props.componentId, 'MainScreen')
             }
           />
         </View>

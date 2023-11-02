@@ -6,21 +6,30 @@ export default StyleSheet.create({
     flexDirection: 'column',
   },
   topPart: {
-    flex: 3,
+    flex: 1,
     backgroundColor: '#61ace5',
     padding: 32,
     alignItems: 'center',
   },
-  img: {
-    width: 250,
-    height: 250,
-    borderRadius: 16,
-    marginBottom: 32,
+  inputContainer: {
+    marginVertical: 16,
+    minHeight: 144,
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'red',
+    padding: 8,
   },
+  input: {},
   text: {
     fontSize: 24,
     lineHeight: 28,
     fontWeight: 'bold',
+  },
+  additionalText: {
+    fontSize: 16,
+    lineHeight: 16,
   },
   btnContainer: {
     position: 'absolute',
