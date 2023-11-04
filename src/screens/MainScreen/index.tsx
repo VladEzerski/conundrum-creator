@@ -8,6 +8,9 @@ import {
   View,
   TextInput,
 } from 'react-native'
+import OpenAI from 'openai'
+
+import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { Button } from '../../components'
 
@@ -17,8 +20,21 @@ const MainScreen: FC = () => {
   const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
 
+  const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
+
+  console.log('openai: ', openai)
+
   const handleInputValueChanged = (text: string) => {
     setInputValue(text)
+  }
+
+  async function sendRequestToGPT() {
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: 'user', content: 'Нужна загадка про ворону' }],
+      model: 'gpt-3',
+    })
+
+    console.log('Response: ', completion)
   }
 
   return (
@@ -41,7 +57,8 @@ const MainScreen: FC = () => {
           <Button
             btnText="Генерация"
             onClick={() => {
-              Alert.alert('Пока недоступно!')
+              // Alert.alert('Пока недоступно!')
+              sendRequestToGPT()
             }}
           />
         </View>
