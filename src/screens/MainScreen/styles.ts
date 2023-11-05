@@ -27,6 +27,14 @@ export default StyleSheet.create({
     lineHeight: 28,
     fontWeight: 'bold',
   },
+  scrollView: {
+    padding: 4,
+    marginTop: 8,
+    marginBottom: 70,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'red',
+  },
   additionalText: {
     fontSize: 16,
     lineHeight: 16,

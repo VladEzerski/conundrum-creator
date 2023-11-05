@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react'
 import {
-  Alert,
   SafeAreaView,
   StatusBar,
   Text,
   useColorScheme,
   View,
   TextInput,
+  ScrollView,
 } from 'react-native'
 import OpenAI from 'openai'
 
@@ -19,22 +19,29 @@ import styles from './styles'
 const MainScreen: FC = () => {
   const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
+  const [gptAnswer, setGptAnswer] = useState<string>('')
+  const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
-
-  console.log('openai: ', openai)
 
   const handleInputValueChanged = (text: string) => {
     setInputValue(text)
   }
 
   async function sendRequestToGPT() {
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: 'Нужна загадка про ворону' }],
-      model: 'gpt-3',
-    })
-
-    console.log('Response: ', completion)
+    try {
+      setIsRequsetLoading(true)
+      const completion = await openai.chat.completions.create({
+        messages: [{ role: 'user', content: inputValue }],
+        model: 'gpt-3.5-turbo',
+      })
+      console.log('Response: ', completion.choices[0])
+      setGptAnswer(completion.choices[0].message.content)
+      setIsRequsetLoading(false)
+    } catch (error) {
+      console.log('Eror: ', error)
+      setIsRequsetLoading(false)
+    }
   }
 
   return (
@@ -52,12 +59,14 @@ const MainScreen: FC = () => {
           />
         </View>
         <Text style={styles.text}>Предпросмотр запроса</Text>
-        <Text style={styles.additionalText}>{inputValue}</Text>
+        <ScrollView style={styles.scrollView}>
+          <Text style={styles.additionalText}>{gptAnswer}</Text>
+        </ScrollView>
         <View style={styles.btnContainer}>
           <Button
             btnText="Генерация"
+            isLoading={isRequsetLoading}
             onClick={() => {
-              // Alert.alert('Пока недоступно!')
               sendRequestToGPT()
             }}
           />
