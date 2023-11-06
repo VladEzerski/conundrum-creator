@@ -33,6 +33,21 @@ const MainScreen: FC = () => {
     setIsModalVisible(false)
   }
 
+  async function generateImage() {
+    try {
+      setIsRequsetLoading(true)
+      const image = await openai.images.generate({
+        prompt: inputValue,
+      })
+
+      console.log(image.data)
+      setIsRequsetLoading(false)
+    } catch (error) {
+      console.log('Eror: ', error)
+      setIsRequsetLoading(false)
+    }
+  }
+
   async function sendRequestToGPT() {
     try {
       setIsRequsetLoading(true)
@@ -80,7 +95,7 @@ const MainScreen: FC = () => {
             btnText="Генерация"
             isLoading={isRequsetLoading}
             onClick={() => {
-              sendRequestToGPT()
+              generateImage()
             }}
           />
         </View>
