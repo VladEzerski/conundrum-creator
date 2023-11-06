@@ -22,12 +22,17 @@ export default StyleSheet.create({
     padding: 8,
   },
   input: {},
+  firstBtnContainer: {
+    marginVertical: 20,
+    height: 48,
+  },
   text: {
     fontSize: 24,
     lineHeight: 28,
     fontWeight: 'bold',
   },
   scrollView: {
+    width: '100%',
     padding: 4,
     marginTop: 8,
     marginBottom: 70,
@@ -39,7 +44,7 @@ export default StyleSheet.create({
     fontSize: 16,
     lineHeight: 16,
   },
-  btnContainer: {
+  secBtnContainer: {
     position: 'absolute',
     bottom: 40,
   },

@@ -1,3 +1,4 @@
 import Button from './Button'
+import ModalView from './ModalView'
 
-export { Button }
+export { Button, ModalView }

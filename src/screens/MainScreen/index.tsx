@@ -12,7 +12,7 @@ import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { Button } from '../../components'
+import { Button, ModalView } from '../../components'
 
 import styles from './styles'
 
@@ -20,12 +20,17 @@ const MainScreen: FC = () => {
   const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
   const [gptAnswer, setGptAnswer] = useState<string>('')
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
   const handleInputValueChanged = (text: string) => {
     setInputValue(text)
+  }
+
+  const handleCloseModalView = (text: string) => {
+    setIsModalVisible(false)
   }
 
   async function sendRequestToGPT() {
@@ -58,11 +63,19 @@ const MainScreen: FC = () => {
             onChangeText={handleInputValueChanged}
           />
         </View>
-        <Text style={styles.text}>Предпросмотр запроса</Text>
+        <View style={styles.firstBtnContainer}>
+          <Button
+            btnText="Предпросмотр"
+            onClick={() => {
+              setIsModalVisible(true)
+            }}
+          />
+        </View>
+        <Text style={styles.text}>Результат</Text>
         <ScrollView style={styles.scrollView}>
           <Text style={styles.additionalText}>{gptAnswer}</Text>
         </ScrollView>
-        <View style={styles.btnContainer}>
+        <View style={styles.secBtnContainer}>
           <Button
             btnText="Генерация"
             isLoading={isRequsetLoading}
@@ -72,6 +85,9 @@ const MainScreen: FC = () => {
           />
         </View>
       </View>
+      {isModalVisible && (
+        <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
+      )}
     </SafeAreaView>
   )
 }
