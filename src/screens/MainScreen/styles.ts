@@ -48,4 +48,10 @@ export default StyleSheet.create({
     position: 'absolute',
     bottom: 40,
   },
+  img: {
+    width: '100%',
+    height: '100%',
+    borderWidth: 1,
+    borderColor: 'yellow',
+  },
 })

@@ -7,6 +7,7 @@ import {
   View,
   TextInput,
   ScrollView,
+  Image,
 } from 'react-native'
 import OpenAI from 'openai'
 
@@ -20,8 +21,11 @@ const MainScreen: FC = () => {
   const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
   const [gptAnswer, setGptAnswer] = useState<string>('')
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
+
+  const isImageGenerator = true
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
@@ -41,6 +45,7 @@ const MainScreen: FC = () => {
       })
 
       console.log(image.data)
+      setGeneratedImage(image.data[0].url)
       setIsRequsetLoading(false)
     } catch (error) {
       console.log('Eror: ', error)
@@ -63,6 +68,8 @@ const MainScreen: FC = () => {
       setIsRequsetLoading(false)
     }
   }
+
+  console.log('IMAGE: ', generatedImage)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,15 +94,28 @@ const MainScreen: FC = () => {
           />
         </View>
         <Text style={styles.text}>Результат</Text>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.additionalText}>{gptAnswer}</Text>
-        </ScrollView>
+        {isImageGenerator ? (
+          <View style={[styles.scrollView, { height: 250 }]}>
+            <Image
+              source={{
+                uri: generatedImage,
+              }}
+              style={styles.img}
+            />
+          </View>
+        ) : (
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.additionalText}>{gptAnswer}</Text>
+          </ScrollView>
+        )}
         <View style={styles.secBtnContainer}>
           <Button
-            btnText="Генерация"
+            btnText={
+              'Генерация ' + (isImageGenerator ? 'изображения' : 'текста')
+            }
             isLoading={isRequsetLoading}
             onClick={() => {
-              generateImage()
+              isImageGenerator ? generateImage() : sendRequestToGPT()
             }}
           />
         </View>
