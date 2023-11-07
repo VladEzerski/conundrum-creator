@@ -5,19 +5,4 @@ import { NavigationService } from './src/navigation/AppNavigator'
 
 NavigationService.registerScreens()
 NavigationService.setDefaultOptions()
-
-  Navigation.events().registerAppLaunchedListener(() => {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          children: [
-            {
-              component: {
-                name: 'WelcomeScreen',
-              },
-            },
-          ],
-        },
-      },
-    })
-  })
+NavigationService.setNavigationTree()

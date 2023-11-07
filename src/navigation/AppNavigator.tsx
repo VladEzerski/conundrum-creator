@@ -27,6 +27,75 @@ class NavigationServiceClass {
     })
   }
 
+  public setNavigationTree() {
+    Navigation.events().registerAppLaunchedListener(() => {
+      Navigation.setRoot({
+        // root: {
+        //   stack: {
+        //     children: [
+        //       {
+        //         component: {
+        //           name: 'WelcomeScreen',
+        //         },
+        //       },
+        //     ],
+        //   },
+        // },
+        root: {
+          bottomTabs: {
+            id: 'BOTTOM_TABS_LAYOUT',
+            children: [
+              {
+                stack: {
+                  id: 'WELCOME_TAB',
+                  children: [
+                    {
+                      component: {
+                        id: 'WELCOME_SCREEN',
+                        name: 'WelcomeScreen',
+                      },
+                    },
+                  ],
+                  options: {
+                    bottomTab: {
+                      icon: {
+                        //only iOS
+                        system: 'house',
+                      },
+                      text: 'Home',
+                    },
+                  },
+                },
+              },
+              {
+                stack: {
+                  id: 'MAIN_TAB',
+                  children: [
+                    {
+                      component: {
+                        id: 'MAIN_SCREEN',
+                        name: 'MainScreen',
+                      },
+                    },
+                  ],
+                  options: {
+                    bottomTab: {
+                      icon: {
+                        //only iOS
+                        system: 'text.bubble',
+                      },
+                      text: 'Chat',
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      })
+    })
+  }
+
   public setDefaultOptions() {
     Navigation.setDefaultOptions({
       statusBar: {
@@ -42,6 +111,9 @@ class NavigationServiceClass {
         background: {
           color: '#4d089a',
         },
+      },
+      bottomTabs: {
+        backgroundColor: '#a3c2da',
       },
     })
   }
