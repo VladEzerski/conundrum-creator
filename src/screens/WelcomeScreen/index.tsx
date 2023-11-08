@@ -34,9 +34,7 @@ const WelcomeScreen: FC<any> = props => {
         <View style={styles.btnContainer}>
           <Button
             btnText="Начать"
-            onClick={() =>
-              NavigationService.pushScreen(props.componentId, 'MainScreen')
-            }
+            onClick={() => NavigationService.navigateToBottomTab('MAIN_TAB')}
           />
         </View>
       </View>

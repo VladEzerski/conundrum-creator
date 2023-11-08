@@ -1,11 +1,15 @@
 import { Navigation } from 'react-native-navigation'
 
-import { WelcomeScreen, MainScreen } from '../screens'
+import { WelcomeScreen, MainScreen, ImageGeneratorScreen } from '../screens'
 
 class NavigationServiceClass {
   public registerScreens() {
     Navigation.registerComponent('WelcomeScreen', () => WelcomeScreen)
     Navigation.registerComponent('MainScreen', () => MainScreen)
+    Navigation.registerComponent(
+      'ImageGeneratorScreen',
+      () => ImageGeneratorScreen,
+    )
   }
 
   public pushScreen(
@@ -23,6 +27,14 @@ class NavigationServiceClass {
             },
           },
         },
+      },
+    })
+  }
+
+  public navigateToBottomTab(componentId: string) {
+    Navigation.mergeOptions('BOTTOM_TABS_LAYOUT', {
+      bottomTabs: {
+        currentTabId: componentId,
       },
     })
   }
@@ -84,7 +96,29 @@ class NavigationServiceClass {
                         //only iOS
                         system: 'text.bubble',
                       },
-                      text: 'Chat',
+                      text: 'Text Generator',
+                    },
+                  },
+                },
+              },
+              {
+                stack: {
+                  id: 'IMAGE_TAB',
+                  children: [
+                    {
+                      component: {
+                        id: 'IMAGE_SCREEN',
+                        name: 'ImageGeneratorScreen',
+                      },
+                    },
+                  ],
+                  options: {
+                    bottomTab: {
+                      icon: {
+                        //only iOS
+                        system: 'photo',
+                      },
+                      text: 'Image Generator',
                     },
                   },
                 },
@@ -114,6 +148,10 @@ class NavigationServiceClass {
       },
       bottomTabs: {
         backgroundColor: '#a3c2da',
+      },
+      bottomTab: {
+        iconColor: 'grey',
+        selectedIconColor: '#61ace5',
       },
     })
   }

@@ -17,10 +17,10 @@ import { Button, ModalView } from '../../components'
 
 import styles from './styles'
 
-const MainScreen: FC = () => {
+const ImageGeneratorScreen: FC = () => {
   const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
-  const [gptAnswer, setGptAnswer] = useState<string>('')
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
@@ -34,21 +34,23 @@ const MainScreen: FC = () => {
     setIsModalVisible(false)
   }
 
-  async function sendRequestToGPT() {
+  async function generateImage() {
     try {
       setIsRequsetLoading(true)
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: 'user', content: inputValue }],
-        model: 'gpt-3.5-turbo',
+      const image = await openai.images.generate({
+        prompt: inputValue,
       })
-      console.log('Response: ', completion.choices[0])
-      setGptAnswer(completion.choices[0].message.content)
+
+      console.log(image.data)
+      setGeneratedImage(image.data[0].url)
       setIsRequsetLoading(false)
     } catch (error) {
       console.log('Eror: ', error)
       setIsRequsetLoading(false)
     }
   }
+
+  console.log('IMAGE: ', generatedImage)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,15 +75,20 @@ const MainScreen: FC = () => {
           />
         </View>
         <Text style={styles.text}>Результат</Text>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.additionalText}>{gptAnswer}</Text>
-        </ScrollView>
+        <View style={[styles.scrollView, { height: 250 }]}>
+          <Image
+            source={{
+              uri: generatedImage,
+            }}
+            style={styles.img}
+          />
+        </View>
         <View style={styles.secBtnContainer}>
           <Button
-            btnText={'Генерация текста'}
+            btnText={'Генерация изображения'}
             isLoading={isRequsetLoading}
             onClick={() => {
-              sendRequestToGPT()
+              generateImage()
             }}
           />
         </View>
@@ -93,4 +100,4 @@ const MainScreen: FC = () => {
   )
 }
 
-export default MainScreen
+export default ImageGeneratorScreen
