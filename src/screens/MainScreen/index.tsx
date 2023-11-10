@@ -14,6 +14,7 @@ import OpenAI from 'openai'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { Button, ModalView } from '../../components'
+import { realmTextResults, TextResult } from '../../models/TextResultsModel'
 
 import styles from './styles'
 
@@ -23,6 +24,9 @@ const MainScreen: FC = () => {
   const [gptAnswer, setGptAnswer] = useState<string>('')
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
+
+  const answers = realmTextResults.objects('TextResults')
+  console.log('REALM answers: ', answers)
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
@@ -42,7 +46,16 @@ const MainScreen: FC = () => {
         model: 'gpt-3.5-turbo',
       })
       console.log('Response: ', completion.choices[0])
-      setGptAnswer(completion.choices[0].message.content)
+      const textResponse = completion.choices[0].message.content
+      setGptAnswer(textResponse)
+
+      realmTextResults.write(() => {
+        realmTextResults.create<TextResult>('TextResults', {
+          request: inputValue,
+          response: textResponse,
+        })
+      })
+
       setIsRequsetLoading(false)
     } catch (error) {
       console.log('Eror: ', error)
