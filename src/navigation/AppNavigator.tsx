@@ -1,6 +1,11 @@
 import { Navigation } from 'react-native-navigation'
 
-import { WelcomeScreen, MainScreen, ImageGeneratorScreen } from '../screens'
+import {
+  WelcomeScreen,
+  MainScreen,
+  ImageGeneratorScreen,
+  HistoryScreen,
+} from '../screens'
 
 class NavigationServiceClass {
   public registerScreens() {
@@ -10,6 +15,7 @@ class NavigationServiceClass {
       'ImageGeneratorScreen',
       () => ImageGeneratorScreen,
     )
+    Navigation.registerComponent('HistoryScreen', () => HistoryScreen)
   }
 
   public pushScreen(
@@ -119,6 +125,28 @@ class NavigationServiceClass {
                         system: 'photo',
                       },
                       text: 'Image Generator',
+                    },
+                  },
+                },
+              },
+              {
+                stack: {
+                  id: 'HISTORY_TAB',
+                  children: [
+                    {
+                      component: {
+                        id: 'HISTORY_SCREEN',
+                        name: 'HistoryScreen',
+                      },
+                    },
+                  ],
+                  options: {
+                    bottomTab: {
+                      icon: {
+                        //only iOS
+                        system: 'clock.fill',
+                      },
+                      text: 'History',
                     },
                   },
                 },

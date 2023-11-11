@@ -25,9 +25,6 @@ const MainScreen: FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
-  const answers = realmTextResults.objects('TextResults')
-  console.log('REALM answers: ', answers)
-
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
   const handleInputValueChanged = (text: string) => {
