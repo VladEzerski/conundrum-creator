@@ -1,5 +1,5 @@
 {
-  "name": "com.vladez.conundrumcreator",
+  "name": "conundrum-creator",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -15,7 +15,6 @@
     "react-native": "^0.72.6",
     "react-native-dotenv": "^3.4.9",
     "react-native-flipper": "^0.212.0",
-    "react-native-navigation": "^7.37.1",
     "react-native-pager-view": "^6.2.2",
     "react-native-svg": "^13.14.0",
     "react-native-tab-view": "^3.5.2",

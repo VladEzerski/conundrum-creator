@@ -5,6 +5,17 @@ module.exports = {
       'module-resolver',
       {
         root: ['./src'],
+        extensions: [
+          '.js',
+          '.jsx',
+          '.ts',
+          '.tsx',
+          '.android.js',
+          '.android.tsx',
+          '.ios.js',
+          '.ios.tsx',
+          '.json',
+        ],
       },
     ],
     [
@@ -13,7 +24,7 @@ module.exports = {
         envName: 'APP_ENV',
         moduleName: '@env',
         path: '.env',
-      }
-    ]
+      },
+    ],
   ],
-};
+}

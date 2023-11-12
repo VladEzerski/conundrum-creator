@@ -10,7 +10,7 @@ import {
 
 // import { Button } from 'components'
 import { Button } from '../../components'
-import { NavigationService } from '../../navigation/AppNavigator'
+// import { NavigationService } from '../../navigation/AppNavigator'
 
 import styles from './styles'
 
@@ -32,10 +32,7 @@ const WelcomeScreen: FC<any> = props => {
           Головоломок!
         </Text>
         <View style={styles.btnContainer}>
-          <Button
-            btnText="Начать"
-            onClick={() => NavigationService.navigateToBottomTab('MAIN_TAB')}
-          />
+          <Button btnText="Начать" onClick={() => console.log('click')} />
         </View>
       </View>
     </SafeAreaView>
