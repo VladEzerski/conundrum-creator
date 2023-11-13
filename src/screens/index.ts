@@ -1,6 +1,11 @@
 import WelcomeScreen from './WelcomeScreen'
-import MainScreen from './MainScreen'
+import TextGeneratorScreen from './TextGeneratorScreen'
 import ImageGeneratorScreen from './ImageGeneratorScreen'
 import HistoryScreen from './HistoryScreen'
 
-export { WelcomeScreen, MainScreen, ImageGeneratorScreen, HistoryScreen }
+export {
+  WelcomeScreen,
+  TextGeneratorScreen,
+  ImageGeneratorScreen,
+  HistoryScreen,
+}

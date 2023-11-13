@@ -1,16 +1,15 @@
 import React, { FC } from 'react'
 import { Text } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import {
-  WelcomeScreen,
-  MainScreen,
-  ImageGeneratorScreen,
-  HistoryScreen,
-} from './screens'
+import { AppNavigator } from './navigation'
 
 const Root = () => {
-  console.log('AppNavigator ')
-  return <WelcomeScreen />
+  return (
+    <SafeAreaProvider>
+      <AppNavigator />
+    </SafeAreaProvider>
+  )
 }
 
 export default Root

@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react'
-import { SafeAreaView, Text, useColorScheme, Dimensions } from 'react-native'
+import { View, Text, useColorScheme, Dimensions } from 'react-native'
 import { TabView } from 'react-native-tab-view'
 
 import TextItems from './components/TextItems'
@@ -27,14 +27,14 @@ const HistoryScreen: FC = () => {
   }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width }}
       />
-    </SafeAreaView>
+    </View>
   )
 }
 

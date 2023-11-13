@@ -1,3 +1,3 @@
 import AppNavigator from './AppNavigator'
 
-// export { AppNavigator, NavigationService }
+export { AppNavigator }

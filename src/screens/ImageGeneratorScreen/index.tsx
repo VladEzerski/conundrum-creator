@@ -1,14 +1,5 @@
 import React, { FC, useState } from 'react'
-import {
-  SafeAreaView,
-  StatusBar,
-  Text,
-  useColorScheme,
-  View,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native'
+import { SafeAreaView, Text, View, TextInput, Image } from 'react-native'
 import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
@@ -18,7 +9,6 @@ import { Button, ModalView } from '../../components'
 import styles from './styles'
 
 const ImageGeneratorScreen: FC = () => {
-  const isDarkMode = useColorScheme() === 'dark'
   const [inputValue, setInputValue] = useState<string>('')
   const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -53,50 +43,47 @@ const ImageGeneratorScreen: FC = () => {
   console.log('IMAGE: ', generatedImage)
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.topPart}>
-        <Text style={styles.text}>Ввод запроса</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            multiline
-            numberOfLines={5}
-            value={inputValue}
-            onChangeText={handleInputValueChanged}
-          />
-        </View>
-        <View style={styles.firstBtnContainer}>
-          <Button
-            btnText="Предпросмотр"
-            onClick={() => {
-              setIsModalVisible(true)
-            }}
-          />
-        </View>
-        <Text style={styles.text}>Результат</Text>
-        <View style={[styles.scrollView, { height: 250 }]}>
-          <Image
-            source={{
-              uri: generatedImage,
-            }}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.secBtnContainer}>
-          <Button
-            btnText={'Генерация изображения'}
-            isLoading={isRequsetLoading}
-            onClick={() => {
-              generateImage()
-            }}
-          />
-        </View>
+    <View style={styles.container}>
+      <Text style={styles.text}>Ввод запроса</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          multiline
+          numberOfLines={5}
+          value={inputValue}
+          onChangeText={handleInputValueChanged}
+        />
+      </View>
+      <View style={styles.firstBtnContainer}>
+        <Button
+          btnText="Предпросмотр"
+          onClick={() => {
+            setIsModalVisible(true)
+          }}
+        />
+      </View>
+      <Text style={styles.text}>Результат</Text>
+      <View style={[styles.scrollView, { height: 250 }]}>
+        <Image
+          source={{
+            uri: generatedImage,
+          }}
+          style={styles.img}
+        />
+      </View>
+      <View style={styles.secBtnContainer}>
+        <Button
+          btnText={'Генерация изображения'}
+          isLoading={isRequsetLoading}
+          onClick={() => {
+            generateImage()
+          }}
+        />
       </View>
       {isModalVisible && (
         <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
       )}
-    </SafeAreaView>
+    </View>
   )
 }
 

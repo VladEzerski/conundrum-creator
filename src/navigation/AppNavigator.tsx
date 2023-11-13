@@ -1,17 +1,27 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import {
-  WelcomeScreen,
-  MainScreen,
-  ImageGeneratorScreen,
-  HistoryScreen,
-} from '../screens'
+import BottomTabsNavigator from './BottomTabsNavigator'
 
-//todo add new navigation
+const Stack = createNativeStackNavigator()
+
+const screenOptions = { headerShown: false }
+
 const AppNavigator: FC = () => {
-  console.log('AppNavigator')
-
-  return null
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="BottomTabsNavigator"
+        screenOptions={screenOptions}>
+        <Stack.Screen
+          name="BottomTabsNavigator"
+          component={BottomTabsNavigator}
+        />
+        {/* <Stack.Screen name="New" component={NewScreen} /> */}
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
 export default AppNavigator

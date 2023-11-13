@@ -1,41 +1,31 @@
 import React, { FC } from 'react'
-import {
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native'
+import { Image, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-// import { Button } from 'components'
 import { Button } from '../../components'
-// import { NavigationService } from '../../navigation/AppNavigator'
 
 import styles from './styles'
 
 const WelcomeScreen: FC<any> = props => {
-  console.log('WelcomeScreen props: ', props)
-
-  const isDarkMode = useColorScheme() === 'dark'
+  //todo create type for navigation
+  const navigation = useNavigation<any>()
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.topPart}>
-        <Image
-          source={require('assets/images/mainIcon.png')}
-          style={styles.img}
+    <View style={styles.container}>
+      <Image
+        source={require('assets/images/mainIcon.png')}
+        style={styles.img}
+      />
+      <Text style={styles.text}>
+        Добро пожаловать в Conundrum Creator - Генератор Ребусов и Головоломок!
+      </Text>
+      <View style={styles.btnContainer}>
+        <Button
+          btnText="Начать"
+          onClick={() => navigation.navigate('TextGenerator')}
         />
-        <Text style={styles.text}>
-          Добро пожаловать в Conundrum Creator - Генератор Ребусов и
-          Головоломок!
-        </Text>
-        <View style={styles.btnContainer}>
-          <Button btnText="Начать" onClick={() => console.log('click')} />
-        </View>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
