@@ -10,7 +10,7 @@ const ScreenLayout: FC<PropsWithChildren> = props => {
   const isDarkMode = useColorScheme() === 'dark'
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['right', 'left', 'top']}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       {children}
     </SafeAreaView>
