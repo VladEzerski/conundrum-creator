@@ -4,7 +4,7 @@ import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { Button, ModalView } from '../../components'
+import { Button, ModalView, ScreenLayout } from '../../components'
 import { realmTextResults, TextResult } from '../../models/TextResultsModel'
 
 import styles from './styles'
@@ -51,42 +51,44 @@ const TextGeneratorScreen: FC = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Ввод запроса</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          multiline
-          numberOfLines={5}
-          value={inputValue}
-          onChangeText={handleInputValueChanged}
-        />
+    <ScreenLayout>
+      <View style={styles.container}>
+        <Text style={styles.text}>Ввод запроса</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            multiline
+            numberOfLines={5}
+            value={inputValue}
+            onChangeText={handleInputValueChanged}
+          />
+        </View>
+        <View style={styles.firstBtnContainer}>
+          <Button
+            btnText="Предпросмотр"
+            onClick={() => {
+              setIsModalVisible(true)
+            }}
+          />
+        </View>
+        <Text style={styles.text}>Результат</Text>
+        <ScrollView style={styles.scrollView}>
+          <Text style={styles.additionalText}>{gptAnswer}</Text>
+        </ScrollView>
+        <View style={styles.secBtnContainer}>
+          <Button
+            btnText={'Генерация текста'}
+            isLoading={isRequsetLoading}
+            onClick={() => {
+              sendRequestToGPT()
+            }}
+          />
+        </View>
+        {isModalVisible && (
+          <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
+        )}
       </View>
-      <View style={styles.firstBtnContainer}>
-        <Button
-          btnText="Предпросмотр"
-          onClick={() => {
-            setIsModalVisible(true)
-          }}
-        />
-      </View>
-      <Text style={styles.text}>Результат</Text>
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.additionalText}>{gptAnswer}</Text>
-      </ScrollView>
-      <View style={styles.secBtnContainer}>
-        <Button
-          btnText={'Генерация текста'}
-          isLoading={isRequsetLoading}
-          onClick={() => {
-            sendRequestToGPT()
-          }}
-        />
-      </View>
-      {isModalVisible && (
-        <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
-      )}
-    </View>
+    </ScreenLayout>
   )
 }
 
