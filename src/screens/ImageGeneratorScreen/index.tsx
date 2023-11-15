@@ -1,10 +1,18 @@
-import React, { FC, useState } from 'react'
-import { Text, View, TextInput, Image } from 'react-native'
+import React, { FC, useState, useCallback } from 'react'
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+  Image,
+} from 'react-native'
 import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { Button, ModalView, ScreenLayout } from '../../components'
+import { SendIcon } from '../../assets/icons'
+import { ScreenLayout } from '../../components'
 
 import styles from './styles'
 
@@ -16,13 +24,19 @@ const ImageGeneratorScreen: FC = () => {
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
+  const hasText = Boolean(generatedImage) || isRequsetLoading
+
   const handleInputValueChanged = (text: string) => {
+    if (text.length === 1) {
+      setGeneratedImage(null)
+    }
     setInputValue(text)
   }
 
-  const handleCloseModalView = (text: string) => {
-    setIsModalVisible(false)
-  }
+  const handleButtonPressed = useCallback(async () => {
+    generateImage()
+    setInputValue('')
+  }, [inputValue])
 
   async function generateImage() {
     try {
@@ -45,45 +59,46 @@ const ImageGeneratorScreen: FC = () => {
   return (
     <ScreenLayout>
       <View style={styles.container}>
-        <Text style={styles.text}>Ввод запроса</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            multiline
-            numberOfLines={5}
-            value={inputValue}
-            onChangeText={handleInputValueChanged}
-          />
-        </View>
-        <View style={styles.firstBtnContainer}>
-          <Button
-            btnText="Предпросмотр"
-            onClick={() => {
-              setIsModalVisible(true)
-            }}
-          />
-        </View>
-        <Text style={styles.text}>Результат</Text>
-        <View style={[styles.scrollView, { height: 250 }]}>
-          <Image
-            source={{
-              uri: generatedImage,
-            }}
-            style={styles.img}
-          />
-        </View>
-        <View style={styles.secBtnContainer}>
-          <Button
-            btnText={'Генерация изображения'}
-            isLoading={isRequsetLoading}
-            onClick={() => {
-              generateImage()
-            }}
-          />
-        </View>
-        {isModalVisible && (
-          <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
+        {hasText && (
+          <View style={styles.resultView}>
+            <View style={styles.textContainer}>
+              <View style={styles.circle}>
+                <Text style={styles.title}>A</Text>
+              </View>
+              <Text style={styles.text}>
+                {isRequsetLoading ? 'Думаю...' : 'Вот что у меня получилось:'}
+              </Text>
+            </View>
+            <View style={styles.imgContainer}>
+              <Image
+                source={{
+                  uri: generatedImage,
+                }}
+                style={styles.img}
+              />
+            </View>
+          </View>
         )}
+        <View style={styles.inputContainer}>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              value={inputValue}
+              onChangeText={handleInputValueChanged}
+              multiline
+              numberOfLines={5}
+              editable={!isRequsetLoading}
+            />
+            <View style={styles.btnContainer}>
+              <Pressable
+                onPress={() => {
+                  handleButtonPressed()
+                }}>
+                {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
+              </Pressable>
+            </View>
+          </View>
+        </View>
       </View>
     </ScreenLayout>
   )
