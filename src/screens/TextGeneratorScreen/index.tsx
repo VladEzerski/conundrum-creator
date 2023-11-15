@@ -1,29 +1,42 @@
-import React, { FC, useState } from 'react'
-import { Text, View, TextInput, ScrollView } from 'react-native'
+import React, { FC, useCallback, useState } from 'react'
+import {
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native'
 import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { Button, ModalView, ScreenLayout } from '../../components'
+import { SendIcon } from '../../assets/icons'
+import { ScreenLayout } from '../../components'
 import { realmTextResults, TextResult } from '../../models/TextResultsModel'
 
 import styles from './styles'
 
 const TextGeneratorScreen: FC = () => {
   const [inputValue, setInputValue] = useState<string>('')
+  const [gptQuestion, setGptQuestion] = useState<string>('')
   const [gptAnswer, setGptAnswer] = useState<string>('')
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
   const handleInputValueChanged = (text: string) => {
+    if (text.length === 1) {
+      setGptQuestion('')
+      setGptAnswer('')
+    }
     setInputValue(text)
   }
 
-  const handleCloseModalView = (text: string) => {
-    setIsModalVisible(false)
-  }
+  const handleButtonPressed = useCallback(async () => {
+    sendRequestToGPT()
+    setGptQuestion(inputValue)
+    setInputValue('')
+  }, [inputValue])
 
   async function sendRequestToGPT() {
     try {
@@ -53,40 +66,44 @@ const TextGeneratorScreen: FC = () => {
   return (
     <ScreenLayout>
       <View style={styles.container}>
-        <Text style={styles.text}>Ввод запроса</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            multiline
-            numberOfLines={5}
-            value={inputValue}
-            onChangeText={handleInputValueChanged}
-          />
-        </View>
-        <View style={styles.firstBtnContainer}>
-          <Button
-            btnText="Предпросмотр"
-            onClick={() => {
-              setIsModalVisible(true)
-            }}
-          />
-        </View>
-        <Text style={styles.text}>Результат</Text>
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.additionalText}>{gptAnswer}</Text>
-        </ScrollView>
-        <View style={styles.secBtnContainer}>
-          <Button
-            btnText={'Генерация текста'}
-            isLoading={isRequsetLoading}
-            onClick={() => {
-              sendRequestToGPT()
-            }}
-          />
-        </View>
-        {isModalVisible && (
-          <ModalView title={'Предпросмотр'} onClose={handleCloseModalView} />
+        {gptQuestion && (
+          <View style={styles.resultView}>
+            <View style={styles.textContainer}>
+              <View style={styles.circle}>
+                <Text style={styles.title}>Q</Text>
+              </View>
+              <Text style={styles.text}>{gptQuestion}</Text>
+            </View>
+            <View style={styles.textContainer}>
+              <View style={styles.circle}>
+                <Text style={styles.title}>A</Text>
+              </View>
+              <Text style={styles.text}>
+                {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
+              </Text>
+            </View>
+          </View>
         )}
+        <View style={styles.inputContainer}>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              value={inputValue}
+              onChangeText={handleInputValueChanged}
+              multiline
+              numberOfLines={5}
+              editable={!isRequsetLoading}
+            />
+            <View style={styles.btnContainer}>
+              <Pressable
+                onPress={() => {
+                  handleButtonPressed()
+                }}>
+                {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
+              </Pressable>
+            </View>
+          </View>
+        </View>
       </View>
     </ScreenLayout>
   )
