@@ -85,9 +85,10 @@ const ImageGeneratorScreen: FC = () => {
               style={styles.input}
               value={inputValue}
               onChangeText={handleInputValueChanged}
-              multiline
-              numberOfLines={5}
               editable={!isRequsetLoading}
+              placeholder="Введи запрос для генерации"
+              placeholderTextColor={'#8e8ea0'}
+              multiline
             />
             <View style={styles.btnContainer}>
               <Pressable

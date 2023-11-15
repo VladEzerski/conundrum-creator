@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   input: {
+    height: 44,
     color: '#ffffff',
     paddingVertical: 10,
     paddingLeft: 12,
