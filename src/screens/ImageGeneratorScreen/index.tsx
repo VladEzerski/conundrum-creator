@@ -5,8 +5,8 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
-  Image,
 } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
@@ -17,23 +17,27 @@ import styles from './styles'
 
 const ImageGeneratorScreen: FC = () => {
   const [inputValue, setInputValue] = useState<string>('')
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+  const [sendedRequest, setSendedRequest] = useState<string>('')
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null,
+  )
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
-  const hasText = Boolean(generatedImage) || isRequsetLoading
+  const hasText = Boolean(generatedImageUrl) || isRequsetLoading
 
   const handleInputValueChanged = (text: string) => {
     if (text.length === 1) {
-      setGeneratedImage(null)
+      setSendedRequest('')
+      setGeneratedImageUrl(null)
     }
     setInputValue(text)
   }
 
   const handleButtonPressed = useCallback(async () => {
     generateImage()
+    setSendedRequest(inputValue)
     setInputValue('')
   }, [inputValue])
 
@@ -45,7 +49,7 @@ const ImageGeneratorScreen: FC = () => {
       })
 
       console.log(image.data)
-      setGeneratedImage(image.data[0].url)
+      setGeneratedImageUrl(image.data[0].url)
       setIsRequsetLoading(false)
     } catch (error) {
       console.log('Eror: ', error)
@@ -53,7 +57,7 @@ const ImageGeneratorScreen: FC = () => {
     }
   }
 
-  console.log('IMAGE: ', generatedImage)
+  console.log('IMAGE: ', generatedImageUrl)
 
   return (
     <View style={styles.container}>
@@ -64,17 +68,26 @@ const ImageGeneratorScreen: FC = () => {
               <Text style={styles.title}>A</Text>
             </View>
             <Text style={styles.text}>
-              {isRequsetLoading ? 'Думаю...' : 'Вот что у меня получилось:'}
+              {isRequsetLoading
+                ? 'Думаю...'
+                : `Вот что у меня получилось по запросу "${sendedRequest}":`}
             </Text>
           </View>
-          <View style={styles.imgContainer}>
-            <Image
-              source={{
-                uri: generatedImage,
-              }}
-              style={styles.img}
-            />
-          </View>
+          {generatedImageUrl && (
+            <View style={styles.imgContainer}>
+              <View style={styles.loader}>
+                <Text style={styles.text}>{'Загружаю изображение...'}</Text>
+                <ActivityIndicator />
+              </View>
+              <FastImage
+                style={styles.img}
+                source={{
+                  uri: generatedImageUrl,
+                  priority: FastImage.priority.high,
+                }}
+              />
+            </View>
+          )}
         </View>
       )}
       <View style={styles.inputContainer}>

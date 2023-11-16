@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     position: 'relative',
     backgroundColor: 'rgb(52, 53, 65)',
-    paddingTop: 32,
+    paddingTop: 16,
   },
   resultView: {
     width: '100%',
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgb(68, 70, 84)',
-    marginBottom: 8,
     padding: 16,
   },
   circle: {
@@ -44,13 +43,27 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   imgContainer: {
-    maxHeight: 250,
+    maxHeight: 230,
+    marginTop: 8,
   },
   img: {
     width: '100%',
     height: '100%',
     borderWidth: 2,
     borderColor: 'rgb(68, 70, 84)',
+    zIndex: 2,
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
   inputContainer: {
     width: '100%',
