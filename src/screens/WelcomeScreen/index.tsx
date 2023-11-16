@@ -6,7 +6,7 @@ import { Button, ScreenLayout } from '../../components'
 
 import styles from './styles'
 
-const WelcomeScreen: FC<any> = props => {
+const WelcomeScreen: FC = () => {
   //todo create type for navigation
   const navigation = useNavigation<any>()
 

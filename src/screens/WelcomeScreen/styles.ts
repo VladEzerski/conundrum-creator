@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#61ace5',
+    backgroundColor: 'rgb(52, 53, 65)',
     padding: 32,
     alignItems: 'center',
   },
@@ -18,6 +18,7 @@ export default StyleSheet.create({
     fontSize: 24,
     lineHeight: 28,
     fontWeight: 'bold',
+    color: '#ffffff',
   },
   btnContainer: {
     position: 'absolute',

@@ -12,7 +12,6 @@ import OpenAI from 'openai'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
-import { ScreenLayout } from '../../components'
 
 import styles from './styles'
 
@@ -57,51 +56,49 @@ const ImageGeneratorScreen: FC = () => {
   console.log('IMAGE: ', generatedImage)
 
   return (
-    <ScreenLayout>
-      <View style={styles.container}>
-        {hasText && (
-          <View style={styles.resultView}>
-            <View style={styles.textContainer}>
-              <View style={styles.circle}>
-                <Text style={styles.title}>A</Text>
-              </View>
-              <Text style={styles.text}>
-                {isRequsetLoading ? 'Думаю...' : 'Вот что у меня получилось:'}
-              </Text>
+    <View style={styles.container}>
+      {hasText && (
+        <View style={styles.resultView}>
+          <View style={styles.textContainer}>
+            <View style={styles.circle}>
+              <Text style={styles.title}>A</Text>
             </View>
-            <View style={styles.imgContainer}>
-              <Image
-                source={{
-                  uri: generatedImage,
-                }}
-                style={styles.img}
-              />
-            </View>
+            <Text style={styles.text}>
+              {isRequsetLoading ? 'Думаю...' : 'Вот что у меня получилось:'}
+            </Text>
           </View>
-        )}
-        <View style={styles.inputContainer}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              value={inputValue}
-              onChangeText={handleInputValueChanged}
-              editable={!isRequsetLoading}
-              placeholder="Введи запрос для генерации"
-              placeholderTextColor={'#8e8ea0'}
-              multiline
+          <View style={styles.imgContainer}>
+            <Image
+              source={{
+                uri: generatedImage,
+              }}
+              style={styles.img}
             />
-            <View style={styles.btnContainer}>
-              <Pressable
-                onPress={() => {
-                  handleButtonPressed()
-                }}>
-                {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
-              </Pressable>
-            </View>
+          </View>
+        </View>
+      )}
+      <View style={styles.inputContainer}>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            value={inputValue}
+            onChangeText={handleInputValueChanged}
+            editable={!isRequsetLoading}
+            placeholder="Введи запрос для генерации"
+            placeholderTextColor={'#8e8ea0'}
+            multiline
+          />
+          <View style={styles.btnContainer}>
+            <Pressable
+              onPress={() => {
+                handleButtonPressed()
+              }}>
+              {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
+            </Pressable>
           </View>
         </View>
       </View>
-    </ScreenLayout>
+    </View>
   )
 }
 

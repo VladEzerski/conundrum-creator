@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#ffffff',
   },
-  imgContainer: { maxHeight: '75%' },
+  imgContainer: {
+    maxHeight: 250,
+  },
   img: {
     width: '100%',
     height: '100%',

@@ -12,10 +12,12 @@ export default StyleSheet.create({
     fontSize: 18,
     lineHeight: 20,
     fontWeight: 'bold',
+    color: '#a5a5a5',
+    marginBottom: 16,
   },
   description: {
     fontSize: 15,
     lineHeight: 25,
-    color: '#808080',
+    color: '#ffffff',
   },
 })

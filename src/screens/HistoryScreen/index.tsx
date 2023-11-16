@@ -2,8 +2,6 @@ import React, { FC, useCallback } from 'react'
 import { View, Text, Dimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
 
-import { ScreenLayout } from '../../components'
-
 import TextItems from './components/TextItems'
 
 import styles from './styles'
@@ -30,33 +28,31 @@ const HistoryScreen: FC = () => {
     return (
       <TabBar
         {...props}
-        indicatorStyle={{ backgroundColor: 'black' }}
+        indicatorStyle={{ backgroundColor: '#ffffff' }}
         style={{
-          backgroundColor: 'white',
-          margin: 16,
+          backgroundColor: 'rgb(64, 65, 79)',
+          marginBottom: 16,
         }}
-        activeColor={'black'}
+        activeColor={'#ffffff'}
         labelStyle={{
           textTransform: 'capitalize',
           fontSize: 16,
-          color: 'gray',
+          color: '#808080',
         }}
       />
     )
   }
 
   return (
-    <ScreenLayout>
-      <View style={styles.container}>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={setIndex}
-          initialLayout={{ width }}
-        />
-      </View>
-    </ScreenLayout>
+    <View style={styles.container}>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={{ width }}
+      />
+    </View>
   )
 }
 

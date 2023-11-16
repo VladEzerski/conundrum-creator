@@ -11,7 +11,6 @@ import OpenAI from 'openai'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
-import { ScreenLayout } from '../../components'
 import { realmTextResults, TextResult } from '../../models/TextResultsModel'
 
 import styles from './styles'
@@ -64,49 +63,47 @@ const TextGeneratorScreen: FC = () => {
   }
 
   return (
-    <ScreenLayout>
-      <View style={styles.container}>
-        {gptQuestion && (
-          <View style={styles.resultView}>
-            <View style={styles.textContainer}>
-              <View style={styles.circle}>
-                <Text style={styles.title}>Q</Text>
-              </View>
-              <Text style={styles.text}>{gptQuestion}</Text>
+    <View style={styles.container}>
+      {gptQuestion && (
+        <View style={styles.resultView}>
+          <View style={styles.textContainer}>
+            <View style={styles.circle}>
+              <Text style={styles.title}>Q</Text>
             </View>
-            <View style={styles.textContainer}>
-              <View style={styles.circle}>
-                <Text style={styles.title}>A</Text>
-              </View>
-              <Text style={styles.text}>
-                {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
-              </Text>
-            </View>
+            <Text style={styles.text}>{gptQuestion}</Text>
           </View>
-        )}
-        <View style={styles.inputContainer}>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              value={inputValue}
-              onChangeText={handleInputValueChanged}
-              editable={!isRequsetLoading}
-              placeholder="Введи запрос для генерации"
-              placeholderTextColor={'#8e8ea0'}
-              multiline
-            />
-            <View style={styles.btnContainer}>
-              <Pressable
-                onPress={() => {
-                  handleButtonPressed()
-                }}>
-                {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
-              </Pressable>
+          <View style={styles.textContainer}>
+            <View style={styles.circle}>
+              <Text style={styles.title}>A</Text>
             </View>
+            <Text style={styles.text}>
+              {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
+            </Text>
+          </View>
+        </View>
+      )}
+      <View style={styles.inputContainer}>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            value={inputValue}
+            onChangeText={handleInputValueChanged}
+            editable={!isRequsetLoading}
+            placeholder="Введи запрос для генерации"
+            placeholderTextColor={'#8e8ea0'}
+            multiline
+          />
+          <View style={styles.btnContainer}>
+            <Pressable
+              onPress={() => {
+                handleButtonPressed()
+              }}>
+              {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
+            </Pressable>
           </View>
         </View>
       </View>
-    </ScreenLayout>
+    </View>
   )
 }
 
