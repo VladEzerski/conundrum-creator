@@ -18,4 +18,4 @@ class TextResultsModel extends Realm.Object<TextResult> {
 
 const realmTextResults = new Realm({ schema: [TextResultsModel] })
 
-export { realmTextResults }
+export { realmTextResults, TextResultsModel }
