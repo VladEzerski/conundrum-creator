@@ -5,6 +5,8 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
+  ScrollView,
+  Alert,
 } from 'react-native'
 import OpenAI from 'openai'
 
@@ -37,6 +39,21 @@ const TextGeneratorScreen: FC = () => {
     setInputValue('')
   }, [inputValue])
 
+  const saveToHistory = useCallback(() => {
+    try {
+      realmTextResults.write(() => {
+        realmTextResults.create<TextResult>('TextResults', {
+          request: inputValue,
+          response: gptAnswer,
+        })
+      })
+      Alert.alert('Запись успешно сохранена!')
+    } catch (error) {
+      console.error('Realn write eror: ', error)
+      Alert.alert(error)
+    }
+  }, [inputValue, gptAnswer])
+
   async function sendRequestToGPT() {
     try {
       setIsRequsetLoading(true)
@@ -47,17 +64,9 @@ const TextGeneratorScreen: FC = () => {
       console.log('Response: ', completion.choices[0])
       const textResponse = completion.choices[0].message.content
       setGptAnswer(textResponse)
-
-      realmTextResults.write(() => {
-        realmTextResults.create<TextResult>('TextResults', {
-          request: inputValue,
-          response: textResponse,
-        })
-      })
-
       setIsRequsetLoading(false)
     } catch (error) {
-      console.log('Eror: ', error)
+      console.error('GPT request eror: ', error)
       setIsRequsetLoading(false)
     }
   }
@@ -66,20 +75,29 @@ const TextGeneratorScreen: FC = () => {
     <View style={styles.container}>
       {gptQuestion && (
         <View style={styles.resultView}>
-          <View style={styles.textContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.title}>Q</Text>
+          <ScrollView>
+            <View style={styles.textContainer}>
+              <View style={styles.circle}>
+                <Text style={styles.title}>Q</Text>
+              </View>
+              <Text style={styles.text}>{gptQuestion}</Text>
+              <Pressable
+                style={styles.btnSave}
+                onPress={() => {
+                  saveToHistory()
+                }}>
+                <Text style={styles.text}>Save</Text>
+              </Pressable>
             </View>
-            <Text style={styles.text}>{gptQuestion}</Text>
-          </View>
-          <View style={styles.textContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.title}>A</Text>
+            <View style={styles.textContainer}>
+              <View style={styles.circle}>
+                <Text style={styles.title}>A</Text>
+              </View>
+              <Text style={styles.text}>
+                {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
+              </Text>
             </View>
-            <Text style={styles.text}>
-              {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
-            </Text>
-          </View>
+          </ScrollView>
         </View>
       )}
       <View style={styles.inputContainer}>
