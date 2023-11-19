@@ -1,21 +1,21 @@
-import React, { FC, Fragment, useCallback, useEffect } from 'react'
+import React, { FC } from 'react'
 import { ScrollView, Text, View } from 'react-native'
+import { useQuery } from '@realm/react'
 
-import {
-  realmTextResults,
-  TextResult,
-} from '../../../../models/TextResultsModel'
+import { Button } from '../../../../components'
+
+import { TextResultsModel } from '../../../../models/TextResultsModel'
 
 import styles from './styles'
 
-const TextItems: FC = props => {
-  const textHistory = realmTextResults.objects('TextResults')
-  console.log('REALM textHistory: ', textHistory)
+const TextItems: FC = () => {
+  const textResultsQuery = useQuery(TextResultsModel, results => {
+    return results
+  })
 
   return (
-    //TODO change to FlatList
     <ScrollView>
-      {textHistory.map((item, index) => {
+      {textResultsQuery.map((item, index) => {
         console.log('Item: ', item)
         return (
           <View key={`a${index}`} style={styles.container}>
