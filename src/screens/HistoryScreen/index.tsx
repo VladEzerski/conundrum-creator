@@ -3,6 +3,7 @@ import { View, Text, Dimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
 
 import TextItems from './components/TextItems'
+import ImageItems from './components/ImageItems'
 
 import styles from './styles'
 
@@ -20,7 +21,7 @@ const HistoryScreen: FC = () => {
       case '0':
         return <TextItems />
       case '1':
-        return <Text>Second</Text>
+        return <ImageItems />
     }
   }, [])
 

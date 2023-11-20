@@ -5,13 +5,19 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
+import Realm from 'realm'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
+import {
+  realmImageResults,
+  ImageResultsModel,
+} from '../../models/ImageResultsModel'
 
 import styles from './styles'
 
@@ -22,6 +28,7 @@ const ImageGeneratorScreen: FC = () => {
     null,
   )
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
+  // const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
@@ -40,6 +47,16 @@ const ImageGeneratorScreen: FC = () => {
     setSendedRequest(inputValue)
     setInputValue('')
   }, [inputValue])
+
+  const saveToHistory = () => {
+    realmImageResults.write(() => {
+      realmImageResults.create<ImageResultsModel>('ImageResults', {
+        task: sendedRequest,
+        imageUrl: generatedImageUrl,
+      })
+    })
+    Alert.alert('Запись успешно сохранена!')
+  }
 
   async function generateImage() {
     try {
@@ -72,6 +89,13 @@ const ImageGeneratorScreen: FC = () => {
                 ? 'Думаю...'
                 : `Вот что у меня получилось по запросу "${sendedRequest}":`}
             </Text>
+            <Pressable
+              style={styles.btnSave}
+              onPress={() => {
+                saveToHistory()
+              }}>
+              <Text style={styles.text}>Save</Text>
+            </Pressable>
           </View>
           {generatedImageUrl && (
             <View style={styles.imgContainer}>

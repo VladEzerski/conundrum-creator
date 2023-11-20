@@ -1,4 +1,4 @@
-import Realm from 'realm'
+import { Realm } from '@realm/react'
 
 class TextResultsModel extends Realm.Object {
   request!: string

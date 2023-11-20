@@ -9,11 +9,15 @@ import {
   Alert,
 } from 'react-native'
 import OpenAI from 'openai'
-import { Realm, useRealm } from '@realm/react'
+// import { Realm, useRealm } from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
+import {
+  realmTextResults,
+  TextResultsModel,
+} from '../../models/TextResultsModel'
 
 import styles from './styles'
 
@@ -22,7 +26,7 @@ const TextGeneratorScreen: FC = () => {
   const [gptQuestion, setGptQuestion] = useState<string>('')
   const [gptAnswer, setGptAnswer] = useState<string>('')
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
-  const realm = useRealm()
+  // const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
@@ -41,8 +45,8 @@ const TextGeneratorScreen: FC = () => {
   }, [inputValue])
 
   const saveToHistory = () => {
-    realm.write(() => {
-      realm.create('TextResults', {
+    realmTextResults.write(() => {
+      realmTextResults.create<TextResultsModel>('TextResults', {
         request: gptQuestion,
         response: gptAnswer,
       })
