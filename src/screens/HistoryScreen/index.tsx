@@ -1,9 +1,12 @@
-import React, { FC, useCallback } from 'react'
+import React, { FC, useCallback, useEffect } from 'react'
 import { View, Text, Dimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
+import { useQuery } from '@realm/react'
 
 import TextItems from './components/TextItems'
 import ImageItems from './components/ImageItems'
+
+import { GenerationInfoModel } from '../../models/GenerationInfoModel'
 
 import styles from './styles'
 
@@ -15,6 +18,25 @@ const HistoryScreen: FC = () => {
     { key: '0', title: 'Text Generations' },
     { key: '1', title: 'Image Generations' },
   ])
+
+  const generationInfoQuery = useQuery(GenerationInfoModel, results => {
+    return results
+  })
+
+  console.log('History generationInfoQuery: ', generationInfoQuery)
+
+  // useEffect(() => {
+  //   const { textHistory, imageHistory } = generationInfoQuery.reduce(
+  //     (acc, info) => {
+  //       if (info.type === 'Text') acc.textHistory.push({ request: info.request, response: info.response })
+  //       if (info.type === 'Image') acc.imageHistory.push({
+  //         request: info.request,
+  //         response: info.response,
+  //       })
+  //     },
+  //     { textHistory: [], imageHistory: [] },
+  //   )
+  // }, [generationInfoQuery])
 
   const renderScene = useCallback(({ route }) => {
     switch (route.key) {

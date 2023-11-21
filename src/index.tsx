@@ -1,10 +1,16 @@
 import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { Realm, useRealm, createRealmContext } from '@realm/react'
+import {
+  Realm,
+  useRealm,
+  createRealmContext,
+  RealmProvider,
+} from '@realm/react'
 
 import { AppNavigator } from './navigation'
 import { TextResultsModel } from './models/TextResultsModel'
 import { ImageResultsModel } from './models/ImageResultsModel'
+import { GenerationInfoModel } from './models/GenerationInfoModel'
 
 // // Create a configuration object
 // const realmTextResultsConfig: Realm.Configuration = {
@@ -37,7 +43,9 @@ const Root = () => {
     <SafeAreaProvider>
       {/* <TextResultsRealmProvider>
         <ImageResultsRealmProvider> */}
-      <AppNavigator />
+      <RealmProvider schema={[GenerationInfoModel]}>
+        <AppNavigator />
+      </RealmProvider>
       {/* </ImageResultsRealmProvider>
       </TextResultsRealmProvider> */}
     </SafeAreaProvider>

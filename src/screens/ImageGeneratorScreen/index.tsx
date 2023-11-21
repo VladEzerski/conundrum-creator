@@ -9,7 +9,13 @@ import {
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
-import Realm from 'realm'
+// import Realm from 'realm'
+import {
+  Realm,
+  useRealm,
+  createRealmContext,
+  RealmProvider,
+} from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
@@ -18,6 +24,7 @@ import {
   realmImageResults,
   ImageResultsModel,
 } from '../../models/ImageResultsModel'
+import { GenerationInfoModel } from '../../models/GenerationInfoModel'
 
 import styles from './styles'
 
@@ -28,7 +35,7 @@ const ImageGeneratorScreen: FC = () => {
     null,
   )
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
-  // const realm = useRealm()
+  const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
@@ -49,10 +56,11 @@ const ImageGeneratorScreen: FC = () => {
   }, [inputValue])
 
   const saveToHistory = () => {
-    realmImageResults.write(() => {
-      realmImageResults.create<ImageResultsModel>('ImageResults', {
-        task: sendedRequest,
-        imageUrl: generatedImageUrl,
+    realm.write(() => {
+      realm.create<GenerationInfoModel>('GenerationInfo', {
+        type: 'Image',
+        request: sendedRequest,
+        response: generatedImageUrl,
       })
     })
     Alert.alert('Запись успешно сохранена!')
