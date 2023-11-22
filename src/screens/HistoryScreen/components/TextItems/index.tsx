@@ -1,28 +1,17 @@
 import React, { FC } from 'react'
 import { ScrollView, Text, View } from 'react-native'
-import { useQuery } from '@realm/react'
 
-import { Button } from '../../../../components'
-
-import {
-  TextResultsModel,
-  realmTextResults,
-} from '../../../../models/TextResultsModel'
+import { HistoryItemsType } from '../../index'
 
 import styles from './styles'
 
-const TextItems: FC = () => {
-  // const textResultsQuery = useQuery(TextResultsModel, results => {
-  //   return results
-  // })
-
-  const textHistory = realmTextResults.objects<TextResultsModel>('TextResults')
-  console.log('REALM textHistory: ', textHistory)
+const TextItems: FC<TextItemsProps> = props => {
+  const { items } = props
+  console.log('History TextItems: ', items)
 
   return (
     <ScrollView>
-      {textHistory?.map((item, index) => {
-        console.log('Item: ', item)
+      {items?.map((item, index) => {
         return (
           <View key={`a${index}`} style={styles.container}>
             <Text style={styles.title}>{item.request}</Text>
@@ -32,6 +21,10 @@ const TextItems: FC = () => {
       })}
     </ScrollView>
   )
+}
+
+interface TextItemsProps {
+  items: HistoryItemsType[]
 }
 
 export default TextItems

@@ -1,5 +1,11 @@
 import { Realm } from '@realm/react'
 
+export type GenerationInfoModelPropertiesType = {
+  type: string
+  request: string
+  response: string
+}
+
 class GenerationInfoModel extends Realm.Object {
   type!: string
   request!: string

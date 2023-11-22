@@ -1,38 +1,30 @@
 import React, { FC } from 'react'
 import { ScrollView, Text, View } from 'react-native'
-import { useQuery } from '@realm/react'
 
-import { Button } from '../../../../components'
-
-import {
-  ImageResultsModel,
-  realmImageResults,
-} from '../../../../models/ImageResultsModel'
+import { HistoryItemsType } from '../../index'
 
 import styles from './styles'
 
-const ImageItems: FC = () => {
-  // const imageResultsQuery = useQuery(ImageResultsModel, results => {
-  //   return results
-  // })
-
-  const imageHistory =
-    realmImageResults.objects<ImageResultsModel>('TextResults')
-  console.log('REALM textHistory: ', imageHistory)
+const ImageItems: FC<ImageItemsProps> = props => {
+  const { items } = props
+  console.log('History ImageItems: ', items)
 
   return (
     <ScrollView>
-      {imageHistory.map((item, index) => {
-        console.log('Item: ', item)
+      {items.map((item, index) => {
         return (
           <View key={`a${index}`} style={styles.container}>
-            <Text style={styles.title}>{item.task}</Text>
-            <Text style={styles.description}>{item.imageUrl}</Text>
+            <Text style={styles.title}>{item.request}</Text>
+            <Text style={styles.description}>{item.response}</Text>
           </View>
         )
       })}
     </ScrollView>
   )
+}
+
+interface ImageItemsProps {
+  items: HistoryItemsType[]
 }
 
 export default ImageItems

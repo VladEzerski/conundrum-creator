@@ -6,11 +6,16 @@ import { useQuery } from '@realm/react'
 import TextItems from './components/TextItems'
 import ImageItems from './components/ImageItems'
 
-import { GenerationInfoModel } from '../../models/GenerationInfoModel'
+import {
+  GenerationInfoModel,
+  GenerationInfoModelPropertiesType,
+} from '../../models/GenerationInfoModel'
 
 import styles from './styles'
 
 const { width } = Dimensions.get('window')
+
+export type HistoryItemsType = Omit<GenerationInfoModelPropertiesType, 'type'>
 
 const HistoryScreen: FC = () => {
   const [index, setIndex] = React.useState(0)
@@ -22,30 +27,30 @@ const HistoryScreen: FC = () => {
   const generationInfoQuery = useQuery(GenerationInfoModel, results => {
     return results
   })
-
   console.log('History generationInfoQuery: ', generationInfoQuery)
 
-  // useEffect(() => {
-  //   const { textHistory, imageHistory } = generationInfoQuery.reduce(
-  //     (acc, info) => {
-  //       if (info.type === 'Text') acc.textHistory.push({ request: info.request, response: info.response })
-  //       if (info.type === 'Image') acc.imageHistory.push({
-  //         request: info.request,
-  //         response: info.response,
-  //       })
-  //     },
-  //     { textHistory: [], imageHistory: [] },
-  //   )
-  // }, [generationInfoQuery])
+  const textHistory: HistoryItemsType[] = []
+  const imageHistory: HistoryItemsType[] = []
 
-  const renderScene = useCallback(({ route }) => {
+  generationInfoQuery.forEach(info => {
+    if (info.type === 'Text') {
+      textHistory.push({ request: info.request, response: info.response })
+    }
+    if (info.type === 'Image') {
+      imageHistory.push({ request: info.request, response: info.response })
+    }
+  })
+
+  GenerationInfoModel.schema.properties
+
+  const renderScene = ({ route }) => {
     switch (route.key) {
       case '0':
-        return <TextItems />
+        return <TextItems items={textHistory} />
       case '1':
-        return <ImageItems />
+        return <ImageItems items={imageHistory} />
     }
-  }, [])
+  }
 
   const renderTabBar = props => {
     return (
