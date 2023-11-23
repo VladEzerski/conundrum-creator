@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   imgContainer: {
-    maxHeight: 230,
+    width: '100%',
+    aspectRatio: 1,
+    overflow: 'hidden',
     marginTop: 8,
   },
   img: {

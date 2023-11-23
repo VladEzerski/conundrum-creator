@@ -1,5 +1,8 @@
-import React, { FC } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import React, { FC, useState } from 'react'
+import { Pressable, ScrollView, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+
+import { ModalView } from '../../../../components'
 
 import { HistoryItemsType } from '../../index'
 
@@ -9,16 +12,41 @@ const ImageItems: FC<ImageItemsProps> = props => {
   const { items } = props
   console.log('History ImageItems: ', items)
 
+  const [selectedItem, setSelectedItem] = useState<HistoryItemsType | null>(
+    null,
+  )
+
   return (
     <ScrollView>
       {items.map((item, index) => {
         return (
-          <View key={`a${index}`} style={styles.container}>
+          <Pressable
+            key={`a${index}`}
+            style={styles.container}
+            onPress={() => setSelectedItem(item)}>
             <Text style={styles.title}>{item.request}</Text>
-            <Text style={styles.description}>{item.response}</Text>
-          </View>
+            <Text style={styles.description}>
+              {'См. сгенерированное изображение...'}
+            </Text>
+          </Pressable>
         )
       })}
+      {selectedItem && (
+        <ModalView
+          title={'Детали генерации:'}
+          onClose={() => setSelectedItem(null)}>
+          <Text style={styles.titleModal}>{selectedItem.request}</Text>
+          <View style={styles.imgContainer}>
+            <FastImage
+              style={styles.img}
+              source={{
+                uri: selectedItem.response,
+                priority: FastImage.priority.high,
+              }}
+            />
+          </View>
+        </ModalView>
+      )}
     </ScrollView>
   )
 }

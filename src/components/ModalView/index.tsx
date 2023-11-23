@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import React, { FC, PropsWithChildren } from 'react'
 import { Text, View, Pressable, ActivityIndicator, Modal } from 'react-native'
 
 import styles from './styles'
 
-const ModalView: FC<ModalViewTypes> = props => {
-  const { title, onClose } = props
+const ModalView: FC<PropsWithChildren<ModalViewTypes>> = props => {
+  const { title, onClose, children } = props
+
   return (
     <Modal animationType="slide" transparent={true}>
       <View style={styles.centeredView}>
@@ -15,6 +16,7 @@ const ModalView: FC<ModalViewTypes> = props => {
             onPress={onClose}>
             <Text style={styles.textStyle}>Hide</Text>
           </Pressable>
+          {children}
         </View>
       </View>
     </Modal>
@@ -22,6 +24,7 @@ const ModalView: FC<ModalViewTypes> = props => {
 }
 export interface ModalViewTypes {
   title: string
+  //TODO fix types
   onClose: (...args: any) => any
 }
 

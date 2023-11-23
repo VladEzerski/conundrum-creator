@@ -20,4 +20,21 @@ export default StyleSheet.create({
     lineHeight: 25,
     color: '#ffffff',
   },
+  titleModal: {
+    fontSize: 20,
+    lineHeight: 20,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginVertical: 16,
+  },
+  imgContainer: {
+    width: '100%',
+    aspectRatio: 1,
+    overflow: 'hidden',
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
 })
