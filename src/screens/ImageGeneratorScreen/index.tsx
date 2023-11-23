@@ -9,21 +9,11 @@ import {
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
-// import Realm from 'realm'
-import {
-  Realm,
-  useRealm,
-  createRealmContext,
-  RealmProvider,
-} from '@realm/react'
+import { useRealm } from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
-import {
-  realmImageResults,
-  ImageResultsModel,
-} from '../../models/ImageResultsModel'
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
 
 import styles from './styles'

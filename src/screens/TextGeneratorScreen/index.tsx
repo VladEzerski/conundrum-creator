@@ -9,15 +9,11 @@ import {
   Alert,
 } from 'react-native'
 import OpenAI from 'openai'
-import { Realm, useRealm } from '@realm/react'
+import { useRealm } from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { SendIcon } from '../../assets/icons'
-import {
-  realmTextResults,
-  TextResultsModel,
-} from '../../models/TextResultsModel'
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
 
 import styles from './styles'
@@ -46,12 +42,6 @@ const TextGeneratorScreen: FC = () => {
   }, [inputValue])
 
   const saveToHistory = () => {
-    // realmTextResults.write(() => {
-    //   realmTextResults.create<TextResultsModel>('TextResults', {
-    //     request: gptQuestion,
-    //     response: gptAnswer,
-    //   })
-    // })
     realm.write(() => {
       realm.create<GenerationInfoModel>('GenerationInfo', {
         type: 'Text',
