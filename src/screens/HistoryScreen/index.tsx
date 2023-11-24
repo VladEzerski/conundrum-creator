@@ -1,7 +1,9 @@
 import React, { FC, useCallback, useEffect } from 'react'
 import { View, Text, Dimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view'
-import { useQuery } from '@realm/react'
+import { useQuery, useRealm } from '@realm/react'
+
+import { Button } from '../../components'
 
 import TextItems from './components/TextItems'
 import ImageItems from './components/ImageItems'
@@ -23,9 +25,11 @@ const HistoryScreen: FC = () => {
     { key: '0', title: 'Text Generations' },
     { key: '1', title: 'Image Generations' },
   ])
+  const realm = useRealm()
 
   const generationInfoQuery = useQuery(GenerationInfoModel, results => {
-    return results
+    console.log('!!! results: ', results)
+    return results.sorted('timestamp', true)
   })
   console.log('History generationInfoQuery: ', generationInfoQuery)
 
@@ -33,15 +37,20 @@ const HistoryScreen: FC = () => {
   const imageHistory: HistoryItemsType[] = []
 
   generationInfoQuery.forEach(info => {
-    if (info.type === 'Text') {
-      textHistory.push({ request: info.request, response: info.response })
+    const { request, response, timestamp, type } = info
+    if (type === 'Text') {
+      textHistory.push({ request, response, timestamp })
     }
-    if (info.type === 'Image') {
-      imageHistory.push({ request: info.request, response: info.response })
+    if (type === 'Image') {
+      imageHistory.push({ request, response, timestamp })
     }
   })
 
-  GenerationInfoModel.schema.properties
+  const clearDatabase = () => {
+    realm.write(() => {
+      realm.deleteAll()
+    })
+  }
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -80,6 +89,14 @@ const HistoryScreen: FC = () => {
         onIndexChange={setIndex}
         initialLayout={{ width }}
       />
+      <View style={styles.btnContainer}>
+        <Button
+          style={styles.clearBtn}
+          textStyle={styles.clearBtnText}
+          btnText="Очистить Историю"
+          onClick={clearDatabase}
+        />
+      </View>
     </View>
   )
 }
