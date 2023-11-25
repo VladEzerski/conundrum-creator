@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { HomeIcon, ChatIcon, ImageChatIcon, HistoryIcon } from '../assets/icons'
 import {
@@ -9,7 +10,10 @@ import {
   HistoryScreen,
 } from '../screens'
 
+import DrawerNavigator from './DrawerNavigator'
+
 const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
 
 const navigatorDefaultOptions = {
   headerShown: false,
@@ -29,6 +33,16 @@ const screenCommonOptions = {
   },
 }
 
+//TODO rework
+const Home = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Drawer" component={DrawerNavigator} />
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+    </Stack.Navigator>
+  )
+}
+
 const BottomTabsNavigator: FC = () => {
   return (
     <Tab.Navigator
@@ -36,7 +50,7 @@ const BottomTabsNavigator: FC = () => {
       screenOptions={navigatorDefaultOptions}>
       <Tab.Screen
         name="Welcome"
-        component={WelcomeScreen}
+        component={Home}
         options={{
           tabBarLabel: 'Домой',
           tabBarIcon: () => <HomeIcon />,
