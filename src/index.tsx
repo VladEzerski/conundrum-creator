@@ -3,7 +3,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { RealmProvider } from '@realm/react'
 
 import { REALM_STORAGE_PATH } from './constants'
-import { AppNavigator } from './navigation'
+import AppNavigator from './navigation/AppNavigator'
 import { GenerationInfoModel } from './models/GenerationInfoModel'
 
 const Root = () => {

@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { HomeIcon, ChatIcon, ImageChatIcon, HistoryIcon } from '../assets/icons'
 import {
-  WelcomeScreen,
   TextGeneratorScreen,
   ImageGeneratorScreen,
   HistoryScreen,
@@ -33,28 +32,17 @@ const screenCommonOptions = {
   },
 }
 
-//TODO rework
-const Home = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Drawer" component={DrawerNavigator} />
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-    </Stack.Navigator>
-  )
-}
-
 const BottomTabsNavigator: FC = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Welcome"
+      initialRouteName="Home"
       screenOptions={navigatorDefaultOptions}>
       <Tab.Screen
-        name="Welcome"
-        component={Home}
+        name="Home"
+        component={DrawerNavigator}
         options={{
           tabBarLabel: 'Домой',
           tabBarIcon: () => <HomeIcon />,
-          headerTintColor: '#ffffff',
         }}
       />
       <Tab.Screen
