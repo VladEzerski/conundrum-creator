@@ -25,6 +25,7 @@ const ImageGeneratorScreen: FC = () => {
     null,
   )
   const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
+  const [isRecordSaved, setIsRecordSaved] = useState<boolean>(false)
   const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
@@ -35,6 +36,7 @@ const ImageGeneratorScreen: FC = () => {
     if (text.length === 1) {
       setSendedRequest('')
       setGeneratedImageUrl(null)
+      setIsRecordSaved(false)
     }
     setInputValue(text)
   }
@@ -53,6 +55,7 @@ const ImageGeneratorScreen: FC = () => {
         response: generatedImageUrl,
       })
     })
+    setIsRecordSaved(true)
     Alert.alert('Запись успешно сохранена!')
   }
 
@@ -78,6 +81,17 @@ const ImageGeneratorScreen: FC = () => {
     <View style={styles.container}>
       {hasText && (
         <View style={styles.resultView}>
+          {generatedImageUrl && !isRecordSaved && (
+            <Pressable
+              style={styles.btnSave}
+              onPress={() => {
+                saveToHistory()
+              }}>
+              <Text style={styles.text}>
+                {'Хотите сохранить запись в историю?'}
+              </Text>
+            </Pressable>
+          )}
           <View style={styles.textContainer}>
             <View style={styles.circle}>
               <Text style={styles.title}>A</Text>
@@ -87,13 +101,6 @@ const ImageGeneratorScreen: FC = () => {
                 ? 'Думаю...'
                 : `Вот что у меня получилось по запросу "${sendedRequest}":`}
             </Text>
-            <Pressable
-              style={styles.btnSave}
-              onPress={() => {
-                saveToHistory()
-              }}>
-              <Text style={styles.text}>Save</Text>
-            </Pressable>
           </View>
           {generatedImageUrl && (
             <View style={styles.imgContainer}>
@@ -119,7 +126,11 @@ const ImageGeneratorScreen: FC = () => {
             value={inputValue}
             onChangeText={handleInputValueChanged}
             editable={!isRequsetLoading}
-            placeholder="Введи запрос для генерации"
+            placeholder={
+              hasText
+                ? 'Начни вводить новый запрос для очистки'
+                : 'Введи запрос для генерации'
+            }
             placeholderTextColor={'#8e8ea0'}
             multiline
           />
