@@ -1,20 +1,12 @@
 import React, { FC, useCallback, useState } from 'react'
-import {
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  ActivityIndicator,
-  ScrollView,
-  Alert,
-} from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
 import OpenAI from 'openai'
 import { useRealm } from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { SendIcon } from '../../assets/icons'
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
+import { SaveHistoryButton, CustomInput } from '../../components'
 
 import styles from './styles'
 
@@ -22,7 +14,7 @@ const TextGeneratorScreen: FC = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [gptQuestion, setGptQuestion] = useState<string>('')
   const [gptAnswer, setGptAnswer] = useState<string>('')
-  const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
+  const [isRequestLoading, setIsRequestLoading] = useState<boolean>(false)
   const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
@@ -35,7 +27,7 @@ const TextGeneratorScreen: FC = () => {
     setInputValue(text)
   }
 
-  const handleButtonPressed = useCallback(async () => {
+  const handleButtonPressed = useCallback(() => {
     sendRequestToGPT()
     setGptQuestion(inputValue)
     setInputValue('')
@@ -49,12 +41,11 @@ const TextGeneratorScreen: FC = () => {
         response: gptAnswer,
       })
     })
-    Alert.alert('Запись успешно сохранена!')
   }
 
   async function sendRequestToGPT() {
     try {
-      setIsRequsetLoading(true)
+      setIsRequestLoading(true)
       const completion = await openai.chat.completions.create({
         messages: [{ role: 'user', content: inputValue }],
         model: 'gpt-3.5-turbo',
@@ -62,10 +53,10 @@ const TextGeneratorScreen: FC = () => {
       console.log('Response: ', completion.choices[0])
       const textResponse = completion.choices[0].message.content
       setGptAnswer(textResponse)
-      setIsRequsetLoading(false)
+      setIsRequestLoading(false)
     } catch (error) {
       console.error('GPT request eror: ', error)
-      setIsRequsetLoading(false)
+      setIsRequestLoading(false)
     }
   }
 
@@ -73,19 +64,13 @@ const TextGeneratorScreen: FC = () => {
     <View style={styles.container}>
       {gptQuestion && (
         <View style={styles.resultView}>
+          {gptAnswer && <SaveHistoryButton onPress={saveToHistory} />}
           <ScrollView>
             <View style={styles.textContainer}>
               <View style={styles.circle}>
                 <Text style={styles.title}>Q</Text>
               </View>
               <Text style={styles.text}>{gptQuestion}</Text>
-              <Pressable
-                style={styles.btnSave}
-                onPress={() => {
-                  saveToHistory()
-                }}>
-                <Text style={styles.text}>Save</Text>
-              </Pressable>
             </View>
             <View style={styles.textContainer}>
               <View style={styles.circle}>
@@ -98,27 +83,12 @@ const TextGeneratorScreen: FC = () => {
           </ScrollView>
         </View>
       )}
-      <View style={styles.inputContainer}>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            onChangeText={handleInputValueChanged}
-            editable={!isRequsetLoading}
-            placeholder="Введи запрос для генерации"
-            placeholderTextColor={'#8e8ea0'}
-            multiline
-          />
-          <View style={styles.btnContainer}>
-            <Pressable
-              onPress={() => {
-                handleButtonPressed()
-              }}>
-              {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
-            </Pressable>
-          </View>
-        </View>
-      </View>
+      <CustomInput
+        inputValue={inputValue}
+        onChangeText={handleInputValueChanged}
+        isLoading={isRequestLoading}
+        onBtnPress={handleButtonPressed}
+      />
     </View>
   )
 }

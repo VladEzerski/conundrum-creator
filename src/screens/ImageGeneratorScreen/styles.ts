@@ -14,16 +14,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 8,
   },
-  btnSave: {
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(25, 195, 125)',
-    borderWidth: 2,
-    borderRadius: 6,
-    borderColor: 'rgb(52, 53, 65)',
-    marginBottom: 16,
-  },
   textContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgb(68, 70, 84)',
@@ -65,7 +55,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(68, 70, 84)',
     zIndex: 2,
   },
-  loader: {
+  loaderContainer: {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -77,38 +67,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
   },
-  inputContainer: {
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 8,
-  },
-  inputWrapper: {
-    height: 44,
-    maxHeight: 200,
-    backgroundColor: 'rgb(64, 65, 79)',
-    borderWidth: 1,
-    borderRadius: 6,
-    borderColor: 'rgba(32, 33, 35, 0.5)',
-    marginVertical: 16,
-    padding: 8,
-  },
-  input: {
-    height: 44,
-    color: '#ffffff',
-    paddingVertical: 10,
-    paddingLeft: 12,
-    paddingRight: 40,
-  },
-  btnContainer: {
-    position: 'absolute',
-    right: 6,
-    bottom: 6,
-    backgroundColor: 'rgb(25, 195, 125)',
-    borderRadius: 6,
-    padding: 4,
+  loader: {
+    marginTop: 16,
   },
 })
 

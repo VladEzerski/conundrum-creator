@@ -1,47 +1,38 @@
 import React, { FC, useState, useCallback } from 'react'
-import {
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from 'react-native'
+import { Text, View, ActivityIndicator } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
 import { useRealm } from '@realm/react'
 
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
-import { SendIcon } from '../../assets/icons'
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
+import { SaveHistoryButton, CustomInput } from '../../components'
 
 import styles from './styles'
 
 const ImageGeneratorScreen: FC = () => {
-  const [inputValue, setInputValue] = useState<string>('')
-  const [sendedRequest, setSendedRequest] = useState<string>('')
+  const [inputValue, setInputValue] = useState('')
+  const [sendedRequest, setSendedRequest] = useState('')
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   )
-  const [isRequsetLoading, setIsRequsetLoading] = useState<boolean>(false)
-  const [isRecordSaved, setIsRecordSaved] = useState<boolean>(false)
+  const [isRequestLoading, setIsRequestLoading] = useState(false)
   const realm = useRealm()
 
   const openai = new OpenAI({ apiKey: REACT_APP_OPENAI_API_KEY })
 
-  const hasText = Boolean(generatedImageUrl) || isRequsetLoading
+  const hasText = Boolean(generatedImageUrl) || isRequestLoading
 
   const handleInputValueChanged = (text: string) => {
     if (text.length === 1) {
       setSendedRequest('')
       setGeneratedImageUrl(null)
-      setIsRecordSaved(false)
     }
     setInputValue(text)
   }
 
-  const handleButtonPressed = useCallback(async () => {
+  const handlePressedInputBtn = useCallback(async () => {
     generateImage()
     setSendedRequest(inputValue)
     setInputValue('')
@@ -55,23 +46,21 @@ const ImageGeneratorScreen: FC = () => {
         response: generatedImageUrl,
       })
     })
-    setIsRecordSaved(true)
-    Alert.alert('Запись успешно сохранена!')
   }
 
   async function generateImage() {
     try {
-      setIsRequsetLoading(true)
+      setIsRequestLoading(true)
       const image = await openai.images.generate({
         prompt: inputValue,
       })
 
       console.log(image.data)
       setGeneratedImageUrl(image.data[0].url)
-      setIsRequsetLoading(false)
+      setIsRequestLoading(false)
     } catch (error) {
       console.log('Eror: ', error)
-      setIsRequsetLoading(false)
+      setIsRequestLoading(false)
     }
   }
 
@@ -81,32 +70,24 @@ const ImageGeneratorScreen: FC = () => {
     <View style={styles.container}>
       {hasText && (
         <View style={styles.resultView}>
-          {generatedImageUrl && !isRecordSaved && (
-            <Pressable
-              style={styles.btnSave}
-              onPress={() => {
-                saveToHistory()
-              }}>
-              <Text style={styles.text}>
-                {'Хотите сохранить запись в историю?'}
-              </Text>
-            </Pressable>
+          {generatedImageUrl && sendedRequest && (
+            <SaveHistoryButton onPress={saveToHistory} />
           )}
           <View style={styles.textContainer}>
             <View style={styles.circle}>
               <Text style={styles.title}>A</Text>
             </View>
             <Text style={styles.text}>
-              {isRequsetLoading
+              {isRequestLoading
                 ? 'Думаю...'
                 : `Вот что у меня получилось по запросу "${sendedRequest}":`}
             </Text>
           </View>
           {generatedImageUrl && (
             <View style={styles.imgContainer}>
-              <View style={styles.loader}>
+              <View style={styles.loaderContainer}>
                 <Text style={styles.text}>{'Загружаю изображение...'}</Text>
-                <ActivityIndicator />
+                <ActivityIndicator style={styles.loader} />
               </View>
               <FastImage
                 style={styles.img}
@@ -119,31 +100,12 @@ const ImageGeneratorScreen: FC = () => {
           )}
         </View>
       )}
-      <View style={styles.inputContainer}>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            onChangeText={handleInputValueChanged}
-            editable={!isRequsetLoading}
-            placeholder={
-              hasText
-                ? 'Начни вводить новый запрос для очистки'
-                : 'Введи запрос для генерации'
-            }
-            placeholderTextColor={'#8e8ea0'}
-            multiline
-          />
-          <View style={styles.btnContainer}>
-            <Pressable
-              onPress={() => {
-                handleButtonPressed()
-              }}>
-              {isRequsetLoading ? <ActivityIndicator /> : <SendIcon />}
-            </Pressable>
-          </View>
-        </View>
-      </View>
+      <CustomInput
+        inputValue={inputValue}
+        onChangeText={handleInputValueChanged}
+        isLoading={isRequestLoading}
+        onBtnPress={handlePressedInputBtn}
+      />
     </View>
   )
 }
