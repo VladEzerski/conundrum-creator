@@ -20,12 +20,18 @@ export default StyleSheet.create({
     lineHeight: 25,
     color: '#ffffff',
   },
+  modalTextContainer: {
+    width: '100%',
+    paddingVertical: 16,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   titleModal: {
     fontSize: 20,
     lineHeight: 20,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginVertical: 16,
   },
   imgContainer: {
     width: '100%',

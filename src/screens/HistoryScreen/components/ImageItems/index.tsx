@@ -32,10 +32,13 @@ const ImageItems: FC<ImageItemsProps> = props => {
         )
       })}
       {selectedItem && (
-        <ModalView
-          title={'Детали генерации:'}
-          onClose={() => setSelectedItem(null)}>
-          <Text style={styles.titleModal}>{selectedItem.request}</Text>
+        <ModalView title={''} onClose={() => setSelectedItem(null)}>
+          <View style={styles.modalTextContainer}>
+            <Text
+              style={
+                styles.titleModal
+              }>{`По запросу "${selectedItem.request}" получилось следующее излображение:`}</Text>
+          </View>
           <View style={styles.imgContainer}>
             <FastImage
               style={styles.img}

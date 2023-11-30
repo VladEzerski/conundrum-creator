@@ -22,8 +22,8 @@ export type HistoryItemsType = Omit<GenerationInfoModelPropertiesType, 'type'>
 const HistoryScreen: FC = () => {
   const [index, setIndex] = React.useState(0)
   const [routes] = React.useState([
-    { key: '0', title: 'Text Generations' },
-    { key: '1', title: 'Image Generations' },
+    { key: '0', title: 'Текстовые запросы' },
+    { key: '1', title: 'Генерация изображений' },
   ])
   const realm = useRealm()
 

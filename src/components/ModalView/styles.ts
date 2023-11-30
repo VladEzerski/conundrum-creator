@@ -11,7 +11,7 @@ export default StyleSheet.create({
     margin: 20,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(155,155,155, 0.95)',
+    backgroundColor: 'rgb(52, 53, 65)',
     // opacity: 0.9,
     borderRadius: 20,
     padding: 16,
