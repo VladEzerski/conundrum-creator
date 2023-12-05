@@ -14,11 +14,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 8,
   },
-  textContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'rgb(68, 70, 84)',
-    padding: 16,
-  },
   text: {
     flexShrink: 1,
     fontSize: 15,

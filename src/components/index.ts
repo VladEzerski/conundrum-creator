@@ -5,6 +5,7 @@ import SocialLinks from './SocialLinks'
 import SaveHistoryButton from './SaveHistoryButton'
 import CustomInput from './CustomInput'
 import Avatar from './Avatar'
+import TextResultField from './TextResultField'
 
 export {
   Button,
@@ -14,4 +15,5 @@ export {
   SaveHistoryButton,
   CustomInput,
   Avatar,
+  TextResultField,
 }

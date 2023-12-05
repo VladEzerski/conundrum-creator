@@ -7,7 +7,11 @@ import { useRealm } from '@realm/react'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
-import { SaveHistoryButton, CustomInput, Avatar } from '../../components'
+import {
+  SaveHistoryButton,
+  CustomInput,
+  TextResultField,
+} from '../../components'
 import { EmAvatarTypes } from '../../types'
 
 import styles from './styles'
@@ -74,14 +78,14 @@ const ImageGeneratorScreen: FC = () => {
           {generatedImageUrl && sendedRequest && (
             <SaveHistoryButton onPress={saveToHistory} />
           )}
-          <View style={styles.textContainer}>
-            <Avatar type={EmAvatarTypes.GPT} />
-            <Text style={styles.text}>
-              {isRequestLoading
+          <TextResultField
+            text={
+              isRequestLoading
                 ? 'Думаю...'
-                : `Вот что у меня получилось по запросу "${sendedRequest}":`}
-            </Text>
-          </View>
+                : `Вот что у меня получилось по запросу "${sendedRequest}":`
+            }
+            avatarType={EmAvatarTypes.GPT}
+          />
           {generatedImageUrl && (
             <View style={styles.imgContainer}>
               <View style={styles.loaderContainer}>
