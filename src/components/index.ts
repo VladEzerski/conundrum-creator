@@ -4,6 +4,7 @@ import ScreenLayout from './ScreenLayout'
 import SocialLinks from './SocialLinks'
 import SaveHistoryButton from './SaveHistoryButton'
 import CustomInput from './CustomInput'
+import Avatar from './Avatar'
 
 export {
   Button,
@@ -12,4 +13,5 @@ export {
   SocialLinks,
   SaveHistoryButton,
   CustomInput,
+  Avatar,
 }

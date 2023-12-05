@@ -6,7 +6,8 @@ import { useRealm } from '@realm/react'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
-import { SaveHistoryButton, CustomInput } from '../../components'
+import { SaveHistoryButton, CustomInput, Avatar } from '../../components'
+import { EmAvatarTypes } from '../../types'
 
 import styles from './styles'
 
@@ -67,15 +68,11 @@ const TextGeneratorScreen: FC = () => {
           {gptAnswer && <SaveHistoryButton onPress={saveToHistory} />}
           <ScrollView>
             <View style={styles.textContainer}>
-              <View style={styles.circle}>
-                <Text style={styles.title}>Q</Text>
-              </View>
+              <Avatar type={EmAvatarTypes.USER} />
               <Text style={styles.text}>{gptQuestion}</Text>
             </View>
             <View style={styles.textContainer}>
-              <View style={styles.circle}>
-                <Text style={styles.title}>A</Text>
-              </View>
+              <Avatar type={EmAvatarTypes.GPT} />
               <Text style={styles.text}>
                 {Boolean(gptAnswer) ? gptAnswer : 'Думаю...'}
               </Text>

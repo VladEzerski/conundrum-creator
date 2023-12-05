@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback } from 'react'
-import { Text, View, ActivityIndicator } from 'react-native'
+import { Text, View, ActivityIndicator, Image } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import OpenAI from 'openai'
 import { useRealm } from '@realm/react'
@@ -7,7 +7,8 @@ import { useRealm } from '@realm/react'
 import { REACT_APP_OPENAI_API_KEY } from '@env'
 
 import { GenerationInfoModel } from '../../models/GenerationInfoModel'
-import { SaveHistoryButton, CustomInput } from '../../components'
+import { SaveHistoryButton, CustomInput, Avatar } from '../../components'
+import { EmAvatarTypes } from '../../types'
 
 import styles from './styles'
 
@@ -74,9 +75,7 @@ const ImageGeneratorScreen: FC = () => {
             <SaveHistoryButton onPress={saveToHistory} />
           )}
           <View style={styles.textContainer}>
-            <View style={styles.circle}>
-              <Text style={styles.title}>A</Text>
-            </View>
+            <Avatar type={EmAvatarTypes.GPT} />
             <Text style={styles.text}>
               {isRequestLoading
                 ? 'Думаю...'
